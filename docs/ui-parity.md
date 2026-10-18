@@ -1,6 +1,6 @@
 # UI parity
 
-> **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-18 · **Change:** minor (Adwaita decorations on Linux Wayland, #54) · **Target:** Microsoft Excel (Microsoft 365), Excel for Mac 16.113.4
+> **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-19 · **Change:** minor (font-free Adwaita decorations on Linux/FreeBSD Wayland, #54) · **Target:** Microsoft Excel (Microsoft 365), Excel for Mac 16.113.4
 
 Interaction, controls and feel, against Excel. Part of [target-app-parity.md](target-app-parity.md).
 **UI/UX fidelity: ~55% ready, 50–80 h** (estimated). Ribbon command coverage is measured
@@ -12,11 +12,13 @@ Sources: `crates/ui-egui/src` (ribbon, grid, editor, formula bar, dialogs, panes
 
 ## Window and chrome
 
-Linux desktop builds enable winit's `wayland-csd-adwaita` feature so that Wayland compositors
-without server-side decorations use Adwaita instead of the minimal fallback frame (#54).
-This retains the native Wayland backend. The contributor verified the Adwaita appearance on
-Ubuntu; exact theme matching on other desktops is not guaranteed. Window titles continue
-to follow the document name and show the existing edited marker.
+Linux and FreeBSD desktop builds enable winit's `wayland-csd-adwaita-notitle` feature so that
+Wayland compositors without server-side decorations use the Adwaita frame and buttons instead
+of the minimal fallback frame (#54). The frame draws no title text and embeds no fallback font;
+the ribbon continues to show the document name. This retains the native Wayland backend, and
+OS window-title metadata still follows the document name and existing edited marker for task
+switchers. The Adwaita appearance was verified on Ubuntu; exact theme matching on other
+desktops is not guaranteed. FreeBSD has not been tested locally.
 
 | Element | Excel | GridCraft | Status |
 |---|---|---|---|
@@ -167,7 +169,7 @@ scrollbar bugs 2–4 · pixel/feel pass against observed Excel 7–12.
 
 | Date | Change | Summary |
 |---|---|---|
-| 2026-10-18 | minor | enable Adwaita decorations for Linux Wayland (#54), verified on Ubuntu; preserve document window titles |
+| 2026-10-19 | minor | use font-free Adwaita frame/buttons on Linux and FreeBSD Wayland (#54); preserve document window-title metadata |
 | 2026-10-12 | minor | The File view's recent list tells when each workbook was last changed, read off the UI thread |
 | 2026-10-13 | minor | Horizontal scrollbar in the sheet tab bar: drag, track click pages, frozen columns excluded from the page (#840) |
 | 2026-10-12 | minor | Ctrl+wheel zoom steps along a ladder of percentages about 20% apart that never skips 100%, gliding to each step with animations on, so a notch out undoes a notch in (it drifted: 100 → 122 → 101); Excel steps 15 points, see decisions.md |
