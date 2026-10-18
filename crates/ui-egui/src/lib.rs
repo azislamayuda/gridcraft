@@ -1158,7 +1158,13 @@ impl SheetApp {
         }
         // Window title.
         if let Some(d) = self.session.active() {
-            let title = format!("{}{}", d.display_title(), if d.is_dirty() { " — Edited" } else { "" });
+            // Linux has a separate native title bar; the ribbon already shows the document name
+            // and its edited marker, so keep the application name in the native bar.
+            let title = if cfg!(target_os = "linux") {
+                "GridCraft".to_owned()
+            } else {
+                format!("{}{}", d.display_title(), if d.is_dirty() { " — Edited" } else { "" })
+            };
             if self.grid.last_title.as_deref() != Some(title.as_str()) {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Title(title.clone()));
                 self.grid.last_title = Some(title);

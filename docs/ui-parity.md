@@ -1,6 +1,6 @@
 # UI parity
 
-> **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-13 · **Change:** minor (horizontal scrollbar in the sheet tab bar, #840) · **Target:** Microsoft Excel (Microsoft 365), Excel for Mac 16.113.4
+> **Last reviewed:** 2026-10-10 · **Last updated:** 2026-10-18 · **Change:** minor (Adwaita decorations and application title on Linux Wayland, #54) · **Target:** Microsoft Excel (Microsoft 365), Excel for Mac 16.113.4
 
 Interaction, controls and feel, against Excel. Part of [target-app-parity.md](target-app-parity.md).
 **UI/UX fidelity: ~55% ready, 50–80 h** (estimated). Ribbon command coverage is measured
@@ -11,6 +11,12 @@ Sources: `crates/ui-egui/src` (ribbon, grid, editor, formula bar, dialogs, panes
 (`plan/excel/observed-ui.md`, local only) and user issues.
 
 ## Window and chrome
+
+Linux desktop builds enable winit's `wayland-csd-adwaita` feature so that Wayland compositors
+without server-side decorations use Adwaita instead of the minimal fallback frame (#54).
+This retains the native Wayland backend. The contributor verified the Adwaita appearance on
+Ubuntu; exact theme matching on other desktops is not guaranteed. The Linux native title bar
+shows `GridCraft`, while the ribbon shows the document name and edited marker.
 
 | Element | Excel | GridCraft | Status |
 |---|---|---|---|
@@ -161,6 +167,7 @@ scrollbar bugs 2–4 · pixel/feel pass against observed Excel 7–12.
 
 | Date | Change | Summary |
 |---|---|---|
+| 2026-10-18 | minor | enable Adwaita decorations for Linux Wayland (#54), verified on Ubuntu; use GridCraft as the Linux native window title |
 | 2026-10-12 | minor | The File view's recent list tells when each workbook was last changed, read off the UI thread |
 | 2026-10-13 | minor | Horizontal scrollbar in the sheet tab bar: drag, track click pages, frozen columns excluded from the page (#840) |
 | 2026-10-12 | minor | Ctrl+wheel zoom steps along a ladder of percentages about 20% apart that never skips 100%, gliding to each step with animations on, so a notch out undoes a notch in (it drifted: 100 → 122 → 101); Excel steps 15 points, see decisions.md |
